@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  redisinsight: 
+    image: redislabs/redisinsight:latest
+    ports: 
+      - 5540:5540
+    # depends_on:
+    #   # Waits until redis cache container is up
+    #   cache:
+    #     condition: service_healthy
+    volumes:
+      - ./redisinsight:/db
+
+  cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - ./cache:/data
+
+
+
+#https://geshan.com.np/blog/2022/01/redis-docker/
+#https://medium.com/@joshisoftynakul/deploying-a-redis-stack-cluster-using-docker-images-along-with-redisinsight-e3588f038a40
+#https://stackoverflow.com/questions/74650687/docker-compose-command-for-redis-stack-server-persistence
+#https://collabnix.com/running-redisinsight-using-docker-compose/
+#https://stackoverflow.com/questions/66197399/run-redis-insights-in-docker-compose
